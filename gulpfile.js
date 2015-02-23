@@ -1,20 +1,30 @@
 (function() {
   'use strict';
 
-  var gulp = require('gulp'),
-    mainBowerFiles = require('main-bower-files'),
-    inject = require('gulp-inject'),
-    del = require('del'),
-    webserver = require('gulp-webserver');
+  var gulp          = require('gulp'),
+    es              = require('event-stream'),
+    angularFilesort = require('gulp-angular-filesort'),
+    mainBowerFiles  = require('main-bower-files'),
+    inject          = require('gulp-inject'),
+    del             = require('del'),
+    minifyCss       = require('gulp-minify-css'),
+    concat          = require('gulp-concat'),
+    templateCache   = require('gulp-angular-templatecache'),
+    uglify          = require('gulp-uglify'),
+    webserver       = require('gulp-webserver');
 
   var paths = {
-    temp: 'temp',
-    tempVendor: 'temp/vendor',
-    tempIndex: 'temp/index.html',
+    temp: './temp',
+    tempVendor: './temp/vendor',
+    tempIndex: './temp/index.html',
 
-    index: 'app/index.html',
-    appSrc: ['app/**/*', '!app/index.html'],
-    bowerSrc: 'bower_components/**/*'
+    index: './app/index.html',
+    appSrc: './app/**/*.js',
+    appCss: './app/**/*.css',
+    appHtml: './app/views/**/*.html',
+    appFonts: './app/fonts/**/*.*',
+    appImages: './app/images/**/*',
+    bowerSrc: './bower_components/**/*'
   };
 
   gulp.task('default', ['watch']);
@@ -37,46 +47,47 @@
   });
 
   gulp.task('copyAll', function() {
-    var tempVendors = gulp.src(mainBowerFiles()).pipe(gulp.dest(paths.tempVendor));
-    console.log(tempVendors);
-    var appFiles = gulp.src(paths.appSrc).pipe(gulp.dest(paths.temp));
+    var vendorStream = gulp.src(mainBowerFiles())
+      .pipe(gulp.dest(paths.tempVendor));
+
+    var appStream = gulp.src(paths.appSrc)
+      .pipe(angularFilesort())
+      .pipe(uglify({mangle: false}))
+      .pipe(gulp.dest(paths.temp));
+
+    var cssStream = gulp.src(paths.appCss)
+      .pipe(concat('app.min.css'))
+      .pipe(minifyCss())
+      .pipe(gulp.dest(paths.temp));
+
+    var htmlStream = gulp.src(paths.appHtml)
+      .pipe(templateCache({root: 'views/', module: 'app'}))
+      .pipe(gulp.dest(paths.temp));
+      
+    fonts();
+    images();
 
     return gulp.src(paths.index)
       .pipe(gulp.dest(paths.temp))
-      .pipe(inject(tempVendors, {
-        relative: true,
-        name: 'vendorInject'
-      }))
-      .pipe(inject(appFiles, {
-        relative: true,
-      }))
+      .pipe(inject(appStream, {relative: true}))
+      .pipe(inject(htmlStream, {name: 'templates', relative: true}))
+      .pipe(inject(cssStream, {relative: true}))
+      .pipe(inject(vendorStream, {name: 'vendorInject', relative: true}))
       .pipe(gulp.dest(paths.temp));
   });
-
-  // gulp.task('vendorScripts', function() {
-  //   var tempVendors = gulp.src(mainBowerFiles()).pipe(gulp.dest(paths.tempVendor));
-  //   return gulp.src(paths.index)
-  //     .pipe(gulp.dest(paths.temp))
-  //     .pipe(inject(tempVendors, {
-  //       relative: true,
-  //       name: 'vendorInject'
-  //     }))
-  //     .pipe(gulp.dest(paths.temp));
-  // });
-  //
-  // gulp.task('scripts', function() {
-  //   var appFiles = gulp.src(paths.appSrc).pipe(gulp.dest(paths.temp));
-  //
-  //   return gulp.src(paths.index)
-  //     .pipe(gulp.dest(paths.temp))
-  //     .pipe(inject(appFiles, {
-  //       relative: true
-  //     }))
-  //     .pipe(gulp.dest(paths.temp));
-  // });
 
   gulp.task('clean', function() {
     del([paths.temp]);
   });
+
+  function fonts() {
+    gulp.src(paths.appFonts)
+      .pipe(gulp.dest(paths.temp + '/fonts'));
+  }
+
+  function images() {
+    gulp.src(paths.appImages)
+      .pipe(gulp.dest(paths.temp + '/images'));
+  }
 
 }());

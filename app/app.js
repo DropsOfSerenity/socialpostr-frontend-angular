@@ -13,13 +13,13 @@
 
       .state('posts', {
         url: '/',
-        templateUrl: 'posts/myposts.html',
+        templateUrl: 'views/myposts.html',
         controller: 'MyPosts'
       })
 
       .state('post', {
         url: '/post?id',
-        templateUrl: 'posts/post.html',
+        templateUrl: 'views/post.html',
         controller: 'Post'
       });
 
