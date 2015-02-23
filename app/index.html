@@ -1,0 +1,40 @@
+<html ng-app="app">
+
+<head>
+  <title></title>
+  <!-- vendorInject:css -->
+  <!-- endinject -->
+
+  <!-- inject:css -->
+  <!-- endinject -->
+</head>
+
+<body ng-controller="Login">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active"><a ui-sref="posts">My Posts</a></li>
+        <li ui-sref-active="active"><a ui-sref="post">New Post</a></li>
+      </ul>
+      <button ng-show="isAuthenticated()" class="btn btn-link navbar-btn pull-right" ng-click="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="col-sm-8 col-md-6 col-md-offset-2 col-sm-offset-2">
+      <div class="jumbotron" ng-hide="isAuthenticated()">
+        <img height="200" width="200" src="https://g.twimg.com/Twitter_logo_blue.png" class="img-responsive" alt="Twitter">
+        <h1>socialpostr</h1>
+        <p>.. make it so.</p>
+        <button class="btn btn-primary btn-lg" ng-click="login()">Login</button>
+      </div>
+      <div ng-if="isAuthenticated()" ui-view></div>
+    </div>
+  </div>
+  <!-- vendorInject:js -->
+  <!-- endinject -->
+  <!-- inject:js -->
+  <!-- endinject -->
+</body>
+
+</html>
