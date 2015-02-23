@@ -2,7 +2,6 @@
   'use strict';
 
   var gulp          = require('gulp'),
-    es              = require('event-stream'),
     angularFilesort = require('gulp-angular-filesort'),
     mainBowerFiles  = require('main-bower-files'),
     inject          = require('gulp-inject'),
@@ -63,7 +62,7 @@
     var htmlStream = gulp.src(paths.appHtml)
       .pipe(templateCache({root: 'views/', module: 'app'}))
       .pipe(gulp.dest(paths.temp));
-      
+
     fonts();
     images();
 
