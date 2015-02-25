@@ -5,9 +5,9 @@
     </textarea>
     <div class="checkbox">
     <label>
-      <input type="checkbox"> Autoreply Enabled?
+      <input type="checkbox" ng-model="autoreplyChecked"> Autoreply Enabled?
     </label>
   </div>
   </div>
-  <button class="btn btn-primary pull-right" ng-disabled="!date" ng-click="save()">Save Settings</button>
+  <button class="btn btn-primary pull-right" ng-click="editSettings()">Save Settings</button>
 </div>
