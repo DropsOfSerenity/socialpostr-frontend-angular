@@ -21,6 +21,12 @@
         url: '/post?id',
         templateUrl: 'views/post.html',
         controller: 'Post'
+      })
+
+      .state('autoreply', {
+        url: '/autoreply',
+        templateUrl: 'views/autoreply.html',
+        controller: 'AutoReply'
       });
 
       $urlRouterProvider.otherwise('/');

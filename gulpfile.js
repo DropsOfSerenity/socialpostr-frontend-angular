@@ -32,6 +32,7 @@
     gulp.watch(paths.appSrc, ['copyAll']);
     gulp.watch(paths.bowerSrc, ['copyAll']);
     gulp.watch(paths.index, ['copyAll']);
+    gulp.watch(paths.appHtml, ['copyAll']);
   });
 
   gulp.task('serve', ['copyAll'], function() {
@@ -40,6 +41,7 @@
         livereload: true,
         proxies: [{
           source: '/api',
+          // target: 'https://socialpostr.herokuapp.com'
           target: 'http://localhost:1337'
         }]
       }));

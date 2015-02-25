@@ -14,7 +14,8 @@
     <div class="container-fluid">
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="posts">My Posts</a></li>
-        <li ui-sref-active="active"><a ui-sref="post">New Post</a></li>
+        <li ng-show="isAuthenticated()" ui-sref-active="active"><a ui-sref="post">New Post</a></li>
+        <li ng-show="isAuthenticated()" ui-sref-active="active"><a ui-sref="autoreply">Auto Reply</a></li>
       </ul>
       <button ng-show="isAuthenticated()" class="btn btn-link navbar-btn pull-right" ng-click="logout()">Logout</button>
     </div>

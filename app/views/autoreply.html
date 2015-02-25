@@ -1,0 +1,13 @@
+<div class="well clearfix">
+  <p>Automatically respond to fans who follow you with the following message</p>
+  <div class="form-group">
+    <textarea rows=4 type="text" placeholder="Autoreply Tweet Content" class="form-control" ng-model="message">
+    </textarea>
+    <div class="checkbox">
+    <label>
+      <input type="checkbox"> Autoreply Enabled?
+    </label>
+  </div>
+  </div>
+  <button class="btn btn-primary pull-right" ng-disabled="!date" ng-click="save()">Save Settings</button>
+</div>
